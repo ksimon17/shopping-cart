@@ -43,14 +43,8 @@ def to_usd(my_price):
 # INFO CAPTURE / INFO INPUT 
 
 
-
-# INFO DISPLAY / OUTPUT 
-
-# ASK FOR USER INPUT
-
-
-total_price = 0
 selected_ids = []
+subtotal = 0
 
 while True:
     product_id = input("Please input a product identifier: ")
@@ -59,11 +53,33 @@ while True:
     else:
         selected_ids.append(product_id)
 
+# INFO DISPLAY / OUTPUT
+from datetime import datetime 
+
+
+print("---------------------------------") 
+print("WELCOME TO GREEN FOODS GROCERY")
+print("WWW.GREEN-FOODS-GROCERY.COM")
+print("---------------------------------") 
+print("CHECKOUT AT:", datetime.today().strftime("%Y-%m-%d %I:%M %p"))
+print("---------------------------------") 
+print("SELECTED PRODUCTS: ")
+
+
 for selected_id in selected_ids:
     matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
     matching_product = matching_products[0]
-    total_price = total_price + matching_product["price"]
-    print("SELECTED PRODUCT:", matching_product["name"], str(matching_product["price"]))    
+    subtotal = subtotal + matching_product["price"]
+    print(" ...", matching_product["name"], "(", str(to_usd(matching_product["price"])) + ")")    
 
+# CALCULATE TAX -  BASED OFF NY STATE SALES TAX of 8.75%
+tax = subtotal * 0.0875
+final_price = subtotal + tax
 
-print("TOTAL PRICE: " + str(to_usd(total_price)))
+print("---------------------------------") 
+print("SUBTOTAL: " + str(to_usd(subtotal)))
+print("TAX: " + str(to_usd(tax)))
+print("TOTAL: " + str(to_usd(final_price)))
+print("---------------------------------") 
+print("THANKS, SEE YOU AGAIN SOON!")
+print("---------------------------------") 

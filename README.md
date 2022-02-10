@@ -14,4 +14,4 @@ In order to configure your individual sales tax rate, please enter the following
 ```sh
 TAX_RATE="Tax Rate" python game.py
 ```
-Otherwise, the default tax rate will always be set to the NY States Sales Tax Rate of 8.75%
+Otherwise, the default tax rate will always be set to the NY States Sales Tax Rate of 8.75%.

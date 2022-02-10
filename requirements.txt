@@ -5,3 +5,8 @@ sendgrid==6.6.0
 
 #Python 'dotenv' package for creating .env files to store the values of environment variables
 python-dotenv
+
+gspread==3.6.0 oauth2client==4.1.3
+
+# ignore the google api credentials file at the following location:
+Desktop/Github/shopping-cart/auth/google-credentials.json

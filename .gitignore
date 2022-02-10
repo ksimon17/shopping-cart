@@ -4,7 +4,11 @@
 # ignore environment variables in the ".env" file:
 .env
 
-
+# ignore google credentials:
+# if you want to name your credentials "google-credentials.json":
+google-credentials.json 
+# otherwise use this catch-all to ignore all JSON files:
+*.json   
 
 # DEFAULT PYTHON GITIGNORE CODE BELOW
 

@@ -1,3 +1,14 @@
+# PROJECT SPECIFIC GITIGNORE CODE
+
+
+# ignore environment variables in the ".env" file:
+.env
+
+
+
+# DEFAULT PYTHON GITIGNORE CODE BELOW
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

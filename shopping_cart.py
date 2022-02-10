@@ -1,5 +1,19 @@
 # shopping_cart.py
 
+# TODO 
+
+# BONUS ASSIGNMENTS
+
+# 1. CONFIGURING SALES TAX RATE (BONUS POINTS: 3-4% - RECOMMENDED)
+# 2. HANDLING PRICING PER POUND (BONUS POINTS: 0 - FOR FUN ONLY)
+# 3. WRITING RECEIPTS TO FILE (BONUS POINTS: 0 - FOR FUN ONLY)
+# 4. SENDING RECEIPTS VIA EMAIL (BONUS POINTS: 6-8% - RECOMMENDED)
+# 5. INTEGRATING WITH A CSV FILE DATASTORE (BONUS POINTS: 3-5%)
+# 6. INTEGRATING WITH A GOOGLE SHEETS DATASTORE (BONUS POINTS: 6-8%)
+# 7. INTEGRATING WITH A BARCODE SCANNER (BONUS POINTS: 0, FOR FUN, NO WAY TO VERIFY)
+
+
+
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
     {"id":2, "name": "All-Seasons Salt", "department": "pantry", "aisle": "spices seasonings", "price": 4.99},
@@ -36,13 +50,7 @@ def to_usd(my_price):
     """
     return f"${my_price:,.2f}" #> $12,000.71
 
-
-# TODO: write some Python code here to produce the desired output
-
-
 # INFO CAPTURE / INFO INPUT 
-
-
 selected_ids = []
 subtotal = 0
 

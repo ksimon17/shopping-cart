@@ -12,14 +12,22 @@ import os
 # 4. SENDING RECEIPTS VIA EMAIL (BONUS POINTS: 6-8% - RECOMMENDED)
 
 #to access the dotenv file
-from dotenv import load_dotenv
-load_dotenv()
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+
+
 
 def send_email():
+    from dotenv import load_dotenv
+    from sendgrid import SendGridAPIClient
+    from sendgrid.helpers.mail import Mail
+
+    load_dotenv()
+    
     SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", default="OOPS, please set env var called 'SENDGRID_API_KEY'")
     SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="OOPS, please set env var called 'SENDER_ADDRESS'")
+
+    print ("SENDGRID_API_KEY:", SENDGRID_API_KEY)
+    print ("SENDER_ADDRESS:", SENDER_ADDRESS)
+    # print ("os.environ:", os.environ)
 
     client = SendGridAPIClient(SENDGRID_API_KEY) #> <class 'sendgrid.sendgrid.SendGridAPIClient>
     print("CLIENT:", type(client))

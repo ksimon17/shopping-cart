@@ -5,13 +5,13 @@
 Create a virtual environment:
 
 ```sh
-conda create -n rps-env python=3.8
+conda create -n shoppingcart-env python=3.8
 ```
 
 Activate the virtual environment:
 
 ```sh
-conda activate rps-env
+conda activate shoppingcart-env
 ```
 
 Install package dependencies (mainly for testing):

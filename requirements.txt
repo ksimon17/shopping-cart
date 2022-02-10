@@ -1,6 +1,7 @@
 
 #The 'sengrid' package
-sengrid
+#sengrid
+sendgrid==6.6.0
 
 #Python 'dotenv' package for creating .env files to store the values of environment variables
 python-dotenv

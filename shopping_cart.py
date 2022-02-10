@@ -2,6 +2,8 @@
 
 # TODO 
 
+import os
+
 # BONUS ASSIGNMENTS
 
 # 1. CONFIGURING SALES TAX RATE (BONUS POINTS: 3-4% - RECOMMENDED)
@@ -51,6 +53,12 @@ def to_usd(my_price):
     return f"${my_price:,.2f}" #> $12,000.71
 
 # INFO CAPTURE / INFO INPUT 
+
+# Set the username to the default NY State Tax Rate or to the user's provided one - BONUS EXERCISE 1
+tax_rate = float(os.getenv("TAX_RATE", default=0.0875))
+print (tax_rate)
+
+
 selected_ids = []
 subtotal = 0
 
@@ -81,7 +89,7 @@ for selected_id in selected_ids:
     print(" ...", matching_product["name"], "(", str(to_usd(matching_product["price"])) + ")")    
 
 # CALCULATE TAX -  BASED OFF NY STATE SALES TAX of 8.75%
-tax = subtotal * 0.0875
+tax = subtotal * tax_rate
 final_price = subtotal + tax
 
 print("---------------------------------") 

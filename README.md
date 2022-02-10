@@ -1,12 +1,11 @@
 # shopping-cart
 
-
-
 ## Usage
 
 ```sh
 python shopping_cart.py
 ```
+
 
 
 # Sales Tax Rate Configuration

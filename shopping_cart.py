@@ -136,3 +136,5 @@ print("TOTAL: " + str(to_usd(final_price)))
 print("---------------------------------") 
 print("THANKS, SEE YOU AGAIN SOON!")
 print("---------------------------------") 
+
+send_email()

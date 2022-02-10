@@ -54,7 +54,8 @@ def to_usd(my_price):
 
 # INFO CAPTURE / INFO INPUT 
 
-# Set the username to the default NY State Tax Rate or to the user's provided one - BONUS EXERCISE 1
+# Set the username to the default NY State Tax Rate or to the user's provided one - BONUS EXERCISE 1 
+# Might need to add a .env file
 tax_rate = float(os.getenv("TAX_RATE", default=0.0875))
 print (tax_rate)
 

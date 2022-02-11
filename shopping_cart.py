@@ -14,6 +14,10 @@ SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="OOPS, please set env var c
 
 tax_rate = float(os.getenv("TAX_RATE", default=0.0875))
 
+selected_ids = []
+subtotal = 0
+tax = 0
+final_price = 0
 
 
 # BONUS ASSIGNMENTS
@@ -27,14 +31,30 @@ tax_rate = float(os.getenv("TAX_RATE", default=0.0875))
 
 
 
-def send_email():
+def send_email(selected_ids):
     client = SendGridAPIClient(SENDGRID_API_KEY) #> <class 'sendgrid.sendgrid.SendGridAPIClient>
     print("CLIENT:", type(client))
 
     subject = "Your Receipt from the Green Grocery Store"
 
-    html_content = "Hello World"
-    print("HTML:", html_content)
+    # html_content = "Hello World"
+    # print("HTML:", html_content)
+
+    html_list_items = ""
+    for item in selected_ids:
+        html_list_items += f"<li>You ordered: Product {item} </li>" 
+
+    html_content = f"""
+    <h3>Hello this is your receipt</h3>
+    <p>Date: {datetime.today().strftime("%B %d, %Y %I:%M %p")}</p>
+    <p>Subtotal: {to_usd(subtotal)}</p>
+    <p>Tax: {to_usd(tax)}</p>
+    <p>Total Price: {to_usd(final_price)}</p>
+    <ol>
+        {html_list_items}
+    </ol>
+    """
+    print(html_content)
 
     # FYI: we'll need to use our verified SENDER_ADDRESS as the `from_email` param
     # ... but we can customize the `to_emails` param to send to other addresses
@@ -188,8 +208,8 @@ def to_usd(my_price):
 print (tax_rate)
 
 
-selected_ids = []
-subtotal = 0
+
+# subtotal = 0
 
 while True:
     product_id = input("Please input a product identifier: ")
@@ -229,4 +249,6 @@ print("---------------------------------")
 print("THANKS, SEE YOU AGAIN SOON!")
 print("---------------------------------")
 
-send_email()
+email_boolean = input("Please enter 'yes' if you wish to receive an email of your receipt: ")
+if email_boolean.lower() == "yes":
+    send_email(selected_ids)

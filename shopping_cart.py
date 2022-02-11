@@ -1,13 +1,31 @@
 # shopping_cart.py
 
-# TODO 
+# TODO
 
 import os
+from dotenv import load_dotenv
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
+load_dotenv()
+
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", default="OOPS, please set env var called 'SENDGRID_API_KEY'")
+SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="OOPS, please set env var called 'SENDER_ADDRESS'")
+
+tax_rate = float(os.getenv("TAX_RATE", default=0.0875))
+
+
+# SENDGRID_API_KEY = "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"
+# SENDER_ADDRESS = "kylesimon4572018@gmail.com"
+
+print ("SENDGRID_API_KEY:", SENDGRID_API_KEY)
+print ("SENDER_ADDRESS:", SENDER_ADDRESS)
+# print ("os.environ:", os.environ)
 
 # BONUS ASSIGNMENTS
 
-# 1. CONFIGURING SALES TAX RATE (BONUS POINTS: 3-4% - RECOMMENDED) - DONE 
-# 2. HANDLING PRICING PER POUND (BONUS POINTS: 0 - FOR FUN ONLY) - DON'T NEED TO DO 
+# 1. CONFIGURING SALES TAX RATE (BONUS POINTS: 3-4% - RECOMMENDED) - DONE
+# 2. HANDLING PRICING PER POUND (BONUS POINTS: 0 - FOR FUN ONLY) - DON'T NEED TO DO
 # 3. WRITING RECEIPTS TO FILE (BONUS POINTS: 0 - FOR FUN ONLY) - DON'T NEED TO DO
 # 4. SENDING RECEIPTS VIA EMAIL (BONUS POINTS: 6-8% - RECOMMENDED) - TODO
 
@@ -16,21 +34,9 @@ import os
 
 
 def send_email():
-    from dotenv import load_dotenv
-    from sendgrid import SendGridAPIClient
-    from sendgrid.helpers.mail import Mail
-
-    load_dotenv()
     
-    # SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", default="OOPS, please set env var called 'SENDGRID_API_KEY'")
-    # SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="OOPS, please set env var called 'SENDER_ADDRESS'")
 
-    SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", default="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")
-    SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="kylesimon4572018@gmail.com")
-
-    print ("SENDGRID_API_KEY:", SENDGRID_API_KEY)
-    print ("SENDER_ADDRESS:", SENDER_ADDRESS)
-    # print ("os.environ:", os.environ)
+    
 
     client = SendGridAPIClient(SENDGRID_API_KEY) #> <class 'sendgrid.sendgrid.SendGridAPIClient>
     print("CLIENT:", type(client))
@@ -184,11 +190,11 @@ def to_usd(my_price):
     """
     return f"${my_price:,.2f}" #> $12,000.71
 
-# INFO CAPTURE / INFO INPUT 
+# INFO CAPTURE / INFO INPUT
 
-# Set the username to the default NY State Tax Rate or to the user's provided one - BONUS EXERCISE 1 
+# Set the username to the default NY State Tax Rate or to the user's provided one - BONUS EXERCISE 1
 # Might need to add a .env file
-tax_rate = float(os.getenv("TAX_RATE", default=0.0875))
+
 print (tax_rate)
 
 
@@ -203,15 +209,15 @@ while True:
         selected_ids.append(product_id)
 
 # INFO DISPLAY / OUTPUT
-from datetime import datetime 
+from datetime import datetime
 
 
-print("---------------------------------") 
+print("---------------------------------")
 print("WELCOME TO GREEN FOODS GROCERY")
 print("WWW.GREEN-FOODS-GROCERY.COM")
-print("---------------------------------") 
+print("---------------------------------")
 print("CHECKOUT AT:", datetime.today().strftime("%Y-%m-%d %I:%M %p"))
-print("---------------------------------") 
+print("---------------------------------")
 print("SELECTED PRODUCTS: ")
 
 
@@ -219,18 +225,18 @@ for selected_id in selected_ids:
     matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
     matching_product = matching_products[0]
     subtotal = subtotal + matching_product["price"]
-    print(" ...", matching_product["name"], "(", str(to_usd(matching_product["price"])) + ")")    
+    print(" ...", matching_product["name"], "(", str(to_usd(matching_product["price"])) + ")")
 
 # CALCULATE TAX -  BASED OFF NY STATE SALES TAX of 8.75%
 tax = subtotal * tax_rate
 final_price = subtotal + tax
 
-print("---------------------------------") 
+print("---------------------------------")
 print("SUBTOTAL: " + str(to_usd(subtotal)))
 print("TAX: " + str(to_usd(tax)))
 print("TOTAL: " + str(to_usd(final_price)))
-print("---------------------------------") 
+print("---------------------------------")
 print("THANKS, SEE YOU AGAIN SOON!")
-print("---------------------------------") 
+print("---------------------------------")
 
 send_email()

@@ -15,12 +15,6 @@ SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="OOPS, please set env var c
 tax_rate = float(os.getenv("TAX_RATE", default=0.0875))
 
 
-# SENDGRID_API_KEY = "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"
-# SENDER_ADDRESS = "kylesimon4572018@gmail.com"
-
-print ("SENDGRID_API_KEY:", SENDGRID_API_KEY)
-print ("SENDER_ADDRESS:", SENDER_ADDRESS)
-# print ("os.environ:", os.environ)
 
 # BONUS ASSIGNMENTS
 
@@ -34,10 +28,6 @@ print ("SENDER_ADDRESS:", SENDER_ADDRESS)
 
 
 def send_email():
-    
-
-    
-
     client = SendGridAPIClient(SENDGRID_API_KEY) #> <class 'sendgrid.sendgrid.SendGridAPIClient>
     print("CLIENT:", type(client))
 

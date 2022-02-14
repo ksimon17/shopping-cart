@@ -10,6 +10,9 @@ google-credentials.json
 # otherwise use this catch-all to ignore all JSON files:
 *.json   
 
+# ignore the google api credentials file at the following location:
+Desktop/Github/shopping-cart/auth/google-credentials.json
+
 # DEFAULT PYTHON GITIGNORE CODE BELOW
 
 

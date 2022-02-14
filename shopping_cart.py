@@ -1,17 +1,26 @@
 # shopping_cart.py
 
-# TODO
-
 import os
 from dotenv import load_dotenv
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+from sendgrid import SendGridAPIClient # Sendgrid Email Bonus Section
+from sendgrid.helpers.mail import Mail # Sendgrid Email bonus Section
+import gspread # Google Sheet Bonus Section
+from oauth2client.service_account import ServiceAccountCredentials # Google Sheet Bonus Section
+from datetime import datetime # for displaying the date and time 
 
 load_dotenv()
 
+
+# Sengrid Email Bonus Section
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", default="OOPS, please set env var called 'SENDGRID_API_KEY'")
 SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="OOPS, please set env var called 'SENDER_ADDRESS'")
 
+# Google Sheet Bonus Section
+DOCUMENT_ID = os.getenv("GOOGLE_SHEET_ID", default="OOPS")
+SHEET_NAME = os.getenv("SHEET_NAME", default="Products-2021")
+
+
+# Global Variables
 tax_rate = float(os.getenv("TAX_RATE", default=0.0875))
 
 selected_ids = []
@@ -73,20 +82,11 @@ def send_email(selected_ids):
         print(err)
 
 
-# I THINK ITS ONE OF 5 or 6 (i.e., not both)
 # 5. INTEGRATING WITH A CSV FILE DATASTORE (BONUS POINTS: 3-5%)
 # 6. INTEGRATING WITH A GOOGLE SHEETS DATASTORE (BONUS POINTS: 6-8%) - TODO
 
 def google_sheet_integration():
-    import os
-    from dotenv import load_dotenv
-    import gspread
-    from oauth2client.service_account import ServiceAccountCredentials
-
-    load_dotenv()
-
-    DOCUMENT_ID = os.getenv("GOOGLE_SHEET_ID", default="OOPS")
-    SHEET_NAME = os.getenv("SHEET_NAME", default="Products-2021")
+    
 
     #
     # AUTHORIZATION
@@ -219,7 +219,6 @@ while True:
         selected_ids.append(product_id)
 
 # INFO DISPLAY / OUTPUT
-from datetime import datetime
 
 
 print("---------------------------------")
@@ -248,6 +247,8 @@ print("TOTAL: " + str(to_usd(final_price)))
 print("---------------------------------")
 print("THANKS, SEE YOU AGAIN SOON!")
 print("---------------------------------")
+
+google_sheet_integration()
 
 email_boolean = input("Please enter 'yes' if you wish to receive an email of your receipt: ")
 if email_boolean.lower() == "yes":

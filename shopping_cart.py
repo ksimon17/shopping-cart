@@ -215,6 +215,12 @@ for p in products:
 print(acceptable_inputs)
 # subtotal = 0
 
+print("---------------------------------")
+print("HELLO, WELCOME TO CHECKOUT AT GREEN FOODS GROCERY!")
+print("Please input the product identifier for all items in your shopping cart")
+print("Once you are finished with all of your items, input 'DONE' to exit the program!")
+print("You will receipt a copy receipt at the end of the checkout process")
+print("---------------------------------")
 while True:
     product_id = input("Please input a product identifier: ")
     if product_id == "DONE":
@@ -228,7 +234,7 @@ while True:
 
 
 print("---------------------------------")
-print("WELCOME TO GREEN FOODS GROCERY")
+print("GREEN FOODS GROCERY")
 print("WWW.GREEN-FOODS-GROCERY.COM")
 print("---------------------------------")
 print("CHECKOUT AT:", datetime.today().strftime("%Y-%m-%d %I:%M %p"))

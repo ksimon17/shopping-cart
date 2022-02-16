@@ -207,14 +207,20 @@ def to_usd(my_price):
 
 print (tax_rate)
 
+#store acceptable input from products for input validation
+acceptable_inputs = []
+for p in products:
+    acceptable_inputs.append(str(p["id"]))
 
-
+print(acceptable_inputs)
 # subtotal = 0
 
 while True:
     product_id = input("Please input a product identifier: ")
     if product_id == "DONE":
         break
+    elif product_id not in acceptable_inputs:
+        print("Sorry, that is not a valid product id. Please try again!")
     else:
         selected_ids.append(product_id)
 

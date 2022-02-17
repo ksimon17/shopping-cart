@@ -1,4 +1,5 @@
 # shopping_cart.py
+# Bonus Exercises Completed - 1, 4, and 6
 
 import os
 from dotenv import load_dotenv
@@ -17,29 +18,20 @@ SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="OOPS, please set env var c
 
 # Google Sheet Bonus Section
 DOCUMENT_ID = os.getenv("GOOGLE_SHEET_ID", default="OOPS")
-SHEET_NAME = os.getenv("SHEET_NAME", default="Products-2021")
+SHEET_NAME = os.getenv("SHEET_NAME", default="shopping-clean")
 
 
 # Global Variables
-tax_rate = float(os.getenv("TAX_RATE", default=0.0875))
-
-selected_ids = []
+tax_rate = float(os.getenv("TAX_RATE", default=0.0875)) # BONUS EXERCISE 1 - CONFIGURING SALES TAX RATE
+selected_ids = [] 
 subtotal = 0
 tax = 0
 final_price = 0
-
-
-# BONUS ASSIGNMENTS
-
-# 1. CONFIGURING SALES TAX RATE (BONUS POINTS: 3-4% - RECOMMENDED) - DONE
-# 2. HANDLING PRICING PER POUND (BONUS POINTS: 0 - FOR FUN ONLY) - DON'T NEED TO DO
-# 3. WRITING RECEIPTS TO FILE (BONUS POINTS: 0 - FOR FUN ONLY) - DON'T NEED TO DO
-# 4. SENDING RECEIPTS VIA EMAIL (BONUS POINTS: 6-8% - RECOMMENDED) - TODO
-
-#to access the dotenv file
+products = [] # to hold the list of dictionaries read in from the google sheet
 
 
 
+# BONUS EXERCISE 4 - SENDING RECEIPTS VIA EMAIL
 def send_email(selected_ids):
     client = SendGridAPIClient(SENDGRID_API_KEY) #> <class 'sendgrid.sendgrid.SendGridAPIClient>
     print("CLIENT:", type(client))
@@ -82,12 +74,8 @@ def send_email(selected_ids):
         print(err)
 
 
-# 5. INTEGRATING WITH A CSV FILE DATASTORE (BONUS POINTS: 3-5%)
-# 6. INTEGRATING WITH A GOOGLE SHEETS DATASTORE (BONUS POINTS: 6-8%) - TODO
-
+# BONUS EXERCISE 6 - INTERGRATING WITH A GOOGLE SHEETS DATASTORE
 def google_sheet_integration():
-    
-
     #
     # AUTHORIZATION
     #
@@ -103,10 +91,10 @@ def google_sheet_integration():
     ]
 
     credentials = ServiceAccountCredentials.from_json_keyfile_name(CREDENTIALS_FILEPATH, AUTH_SCOPE)
-    print("CREDS:", type(credentials)) #> <class 'oauth2client.service_account.ServiceAccountCredentials'>
+   # print("CREDS:", type(credentials)) #> <class 'oauth2client.service_account.ServiceAccountCredentials'>
 
     client = gspread.authorize(credentials)
-    print("CLIENT:", type(client)) #> <class 'gspread.client.Client'>
+    #print("CLIENT:", type(client)) #> <class 'gspread.client.Client'>
 
     #
     # READ SHEET VALUES
@@ -115,78 +103,23 @@ def google_sheet_integration():
     # ...  https://gspread.readthedocs.io/en/latest/api.html#gspread.models.Spreadsheet
     # ...  https://gspread.readthedocs.io/en/latest/api.html#gspread.models.Worksheet
 
-    print("-----------------")
-    print("READING DOCUMENT...")
+    #print("-----------------")
+    #print("READING DOCUMENT...")
 
     doc = client.open_by_key(DOCUMENT_ID)
-    print("DOC:", type(doc), doc.title) #> <class 'gspread.models.Spreadsheet'>
+    #print("DOC:", type(doc), doc.title) #> <class 'gspread.models.Spreadsheet'>
 
     sheet = doc.worksheet(SHEET_NAME)
-    print("SHEET:", type(sheet), sheet.title)#> <class 'gspread.models.Worksheet'>
+    #print("SHEET:", type(sheet), sheet.title)#> <class 'gspread.models.Worksheet'>
 
     rows = sheet.get_all_records()
-    print("ROWS:", type(rows)) #> <class 'list'>
+    # print("ROWS:", type(rows)) #> <class 'list'>
 
-    for row in rows:
-        print(row) #> <class 'dict'>
+    # for row in rows:
+    #     print(row) #> <class 'dict'>
 
-    #
-    # WRITE VALUES TO SHEET
-    #
-    # see: https://gspread.readthedocs.io/en/latest/api.html#gspread.models.Worksheet.insert_row
-
-    print("-----------------")
-    print("NEW ROW...")
-
-    auto_incremented_id = len(rows) + 1 # TODO: should change this to be one greater than the current maximum id value
-    new_row = {
-        "id": auto_incremented_id,
-        "name": f"Product {auto_incremented_id} (created from my python app)",
-        "department": "snacks",
-        "price": 4.99,
-        "availability_date": "2021-02-17"
-    }
-    print(new_row)
-
-    print("-----------------")
-    print("WRITING VALUES TO DOCUMENT...")
-
-    # the sheet's insert_row() method wants our data to be in this format (see docs):
-    new_values = list(new_row.values()) #> [13, 'Product 13', 'snacks', 4.99, '2019-01-01']
-
-    # the sheet's insert_row() method wants us to pass the row number where this will be inserted (see docs):
-    next_row_number = len(rows) + 2 # number of records, plus a header row, plus one
-
-    response = sheet.insert_row(new_values, next_row_number)
-
-    print("RESPONSE:", type(response)) #> dict
-    print(response) #> {'spreadsheetId': '____', 'updatedRange': "'Products-2021'!A9:E9", 'updatedRows': 1, 'updatedColumns': 5, 'updatedCells': 5}
-
-# 7. INTEGRATING WITH A BARCODE SCANNER (BONUS POINTS: 0, FOR FUN, NO WAY TO VERIFY)
-
-products = [
-    {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
-    {"id":2, "name": "All-Seasons Salt", "department": "pantry", "aisle": "spices seasonings", "price": 4.99},
-    {"id":3, "name": "Robust Golden Unsweetened Oolong Tea", "department": "beverages", "aisle": "tea", "price": 2.49},
-    {"id":4, "name": "Smart Ones Classic Favorites Mini Rigatoni With Vodka Cream Sauce", "department": "frozen", "aisle": "frozen meals", "price": 6.99},
-    {"id":5, "name": "Green Chile Anytime Sauce", "department": "pantry", "aisle": "marinades meat preparation", "price": 7.99},
-    {"id":6, "name": "Dry Nose Oil", "department": "personal care", "aisle": "cold flu allergy", "price": 21.99},
-    {"id":7, "name": "Pure Coconut Water With Orange", "department": "beverages", "aisle": "juice nectars", "price": 3.50},
-    {"id":8, "name": "Cut Russet Potatoes Steam N' Mash", "department": "frozen", "aisle": "frozen produce", "price": 4.25},
-    {"id":9, "name": "Light Strawberry Blueberry Yogurt", "department": "dairy eggs", "aisle": "yogurt", "price": 6.50},
-    {"id":10, "name": "Sparkling Orange Juice & Prickly Pear Beverage", "department": "beverages", "aisle": "water seltzer sparkling water", "price": 2.99},
-    {"id":11, "name": "Peach Mango Juice", "department": "beverages", "aisle": "refrigerated", "price": 1.99},
-    {"id":12, "name": "Chocolate Fudge Layer Cake", "department": "frozen", "aisle": "frozen dessert", "price": 18.50},
-    {"id":13, "name": "Saline Nasal Mist", "department": "personal care", "aisle": "cold flu allergy", "price": 16.00},
-    {"id":14, "name": "Fresh Scent Dishwasher Cleaner", "department": "household", "aisle": "dish detergents", "price": 4.99},
-    {"id":15, "name": "Overnight Diapers Size 6", "department": "babies", "aisle": "diapers wipes", "price": 25.50},
-    {"id":16, "name": "Mint Chocolate Flavored Syrup", "department": "snacks", "aisle": "ice cream toppings", "price": 4.50},
-    {"id":17, "name": "Rendered Duck Fat", "department": "meat seafood", "aisle": "poultry counter", "price": 9.99},
-    {"id":18, "name": "Pizza for One Suprema Frozen Pizza", "department": "frozen", "aisle": "frozen pizza", "price": 12.50},
-    {"id":19, "name": "Gluten Free Quinoa Three Cheese & Mushroom Blend", "department": "dry goods pasta", "aisle": "grains rice dried goods", "price": 3.99},
-    {"id":20, "name": "Pomegranate Cranberry & Aloe Vera Enrich Drink", "department": "beverages", "aisle": "juice nectars", "price": 4.25}
-] # based on data from Instacart: https://www.instacart.com/datasets/grocery-shopping-2017
-
+    return rows
+    
 
 def to_usd(my_price):
     """
@@ -200,27 +133,31 @@ def to_usd(my_price):
     """
     return f"${my_price:,.2f}" #> $12,000.71
 
-# INFO CAPTURE / INFO INPUT
 
-# Set the username to the default NY State Tax Rate or to the user's provided one - BONUS EXERCISE 1
-# Might need to add a .env file
+# ****************************
+# READ IN THE APPROPRIATE DATA
+# ****************************
 
-print (tax_rate)
+products = google_sheet_integration() # BONUS CHALLENGE 6 - GOOGLE SHEET INTEGRATION
 
 #store acceptable input from products for input validation
 acceptable_inputs = []
 for p in products:
-    acceptable_inputs.append(str(p["id"]))
+    acceptable_inputs.append(str(p['id']))
 
-print(acceptable_inputs)
-# subtotal = 0
+# *************************
+# INFO CAPTURE / INFO INPUT
+# *************************
 
+# GREETING THE USER AND INFORMING THEM HOW TO INTERACT WITH THE PROGRAM
 print("---------------------------------")
 print("HELLO, WELCOME TO CHECKOUT AT GREEN FOODS GROCERY!")
 print("Please input the product identifier for all items in your shopping cart")
 print("Once you are finished with all of your items, input 'DONE' to exit the program!")
 print("You will receipt a copy receipt at the end of the checkout process")
 print("---------------------------------")
+
+# LOOP WHERE THE USER ENTER IDs OF THEIR SELECTED PRODUCTS
 while True:
     product_id = input("Please input a product identifier: ")
     if product_id == "DONE":
@@ -230,28 +167,39 @@ while True:
     else:
         selected_ids.append(product_id)
 
+# *********************
 # INFO DISPLAY / OUTPUT
+# *********************
 
+# PROVIDE THE USER WITH THE OPTION TO RECEIVE AN EMAIL COPY OF THEIR RECEIPT
+print("Thank you for inputting your items. You will receive your receipt shortly.")
+email_boolean = input("Please enter 'yes' if you wish to receive a copy of your receipt via email. Otherwise, just press enter: ")
+if email_boolean.lower() == "yes":
+    send_email(selected_ids) # BONUS EXERCISE 4 - SENDING RECEIPTS VIA EMAIL
 
+# DISPLAY RECEIPT TO USER
+print("---------------------------------")
+print("YOUR RECEIPT:")
 print("---------------------------------")
 print("GREEN FOODS GROCERY")
 print("WWW.GREEN-FOODS-GROCERY.COM")
 print("---------------------------------")
 print("CHECKOUT AT:", datetime.today().strftime("%Y-%m-%d %I:%M %p"))
 print("---------------------------------")
-print("SELECTED PRODUCTS: ")
+print("SELECTED products: ")
 
-
+# DISPLAY SELECTED PRODUCTS TO THE USER AND CALCULATE SUBTOTAL
 for selected_id in selected_ids:
-    matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
-    matching_product = matching_products[0]
+    matching_rows = [p for p in products if str(p["id"]) == str(selected_id)]
+    matching_product = matching_rows[0]
     subtotal = subtotal + matching_product["price"]
-    print(" ...", matching_product["name"], "(", str(to_usd(matching_product["price"])) + ")")
+    print(" ...", matching_product["name"], "(" + str(to_usd(matching_product["price"])) + ")")
 
-# CALCULATE TAX -  BASED OFF NY STATE SALES TAX of 8.75%
+# CALCULATE TAX AND FINAL PRICE
 tax = subtotal * tax_rate
 final_price = subtotal + tax
 
+# DISPLAY TOTALS TO USER
 print("---------------------------------")
 print("SUBTOTAL: " + str(to_usd(subtotal)))
 print("TAX: " + str(to_usd(tax)))
@@ -260,8 +208,30 @@ print("---------------------------------")
 print("THANKS, SEE YOU AGAIN SOON!")
 print("---------------------------------")
 
-google_sheet_integration()
 
-email_boolean = input("Please enter 'yes' if you wish to receive an email of your receipt: ")
-if email_boolean.lower() == "yes":
-    send_email(selected_ids)
+
+
+
+
+# products = [
+#     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
+#     {"id":2, "name": "All-Seasons Salt", "department": "pantry", "aisle": "spices seasonings", "price": 4.99},
+#     {"id":3, "name": "Robust Golden Unsweetened Oolong Tea", "department": "beverages", "aisle": "tea", "price": 2.49},
+#     {"id":4, "name": "Smart Ones Classic Favorites Mini Rigatoni With Vodka Cream Sauce", "department": "frozen", "aisle": "frozen meals", "price": 6.99},
+#     {"id":5, "name": "Green Chile Anytime Sauce", "department": "pantry", "aisle": "marinades meat preparation", "price": 7.99},
+#     {"id":6, "name": "Dry Nose Oil", "department": "personal care", "aisle": "cold flu allergy", "price": 21.99},
+#     {"id":7, "name": "Pure Coconut Water With Orange", "department": "beverages", "aisle": "juice nectars", "price": 3.50},
+#     {"id":8, "name": "Cut Russet Potatoes Steam N' Mash", "department": "frozen", "aisle": "frozen produce", "price": 4.25},
+#     {"id":9, "name": "Light Strawberry Blueberry Yogurt", "department": "dairy eggs", "aisle": "yogurt", "price": 6.50},
+#     {"id":10, "name": "Sparkling Orange Juice & Prickly Pear Beverage", "department": "beverages", "aisle": "water seltzer sparkling water", "price": 2.99},
+#     {"id":11, "name": "Peach Mango Juice", "department": "beverages", "aisle": "refrigerated", "price": 1.99},
+#     {"id":12, "name": "Chocolate Fudge Layer Cake", "department": "frozen", "aisle": "frozen dessert", "price": 18.50},
+#     {"id":13, "name": "Saline Nasal Mist", "department": "personal care", "aisle": "cold flu allergy", "price": 16.00},
+#     {"id":14, "name": "Fresh Scent Dishwasher Cleaner", "department": "household", "aisle": "dish detergents", "price": 4.99},
+#     {"id":15, "name": "Overnight Diapers Size 6", "department": "babies", "aisle": "diapers wipes", "price": 25.50},
+#     {"id":16, "name": "Mint Chocolate Flavored Syrup", "department": "snacks", "aisle": "ice cream toppings", "price": 4.50},
+#     {"id":17, "name": "Rendered Duck Fat", "department": "meat seafood", "aisle": "poultry counter", "price": 9.99},
+#     {"id":18, "name": "Pizza for One Suprema Frozen Pizza", "department": "frozen", "aisle": "frozen pizza", "price": 12.50},
+#     {"id":19, "name": "Gluten Free Quinoa Three Cheese & Mushroom Blend", "department": "dry goods pasta", "aisle": "grains rice dried goods", "price": 3.99},
+#     {"id":20, "name": "Pomegranate Cranberry & Aloe Vera Enrich Drink", "department": "beverages", "aisle": "juice nectars", "price": 4.25}
+# ] # based on data from Instacart: https://www.instacart.com/datasets/grocery-shopping-2017

@@ -1,6 +1,6 @@
 # shopping-cart
 
-## Setup
+## General Environement Setup
 
 Create a virtual environment:
 
@@ -20,7 +20,9 @@ Install package dependencies (which are individual listed out later in the READM
 pip install -r requirements.txt
 ```
 
+# Sendgrid API Key Setup
 
+# Google Sheet API Key Setup
 
 
 
@@ -30,7 +32,7 @@ pip install -r requirements.txt
 python shopping_cart.py
 ```
 
-# Sales Tax Rate Configuration
+## Sales Tax Rate Configuration
 In order to configure your individual sales tax rate, please enter the following when running the program:
 ```sh
 TAX_RATE="Tax Rate" python game.py

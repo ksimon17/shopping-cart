@@ -14,7 +14,7 @@ Activate the virtual environment:
 conda activate shoppingcart-env
 ```
 
-Install package dependencies (mainly for testing):
+Install package dependencies (which are individual listed out later in the README):
 
 ```sh
 pip install -r requirements.txt
@@ -42,4 +42,10 @@ pip install sendgrid
 You also have the option to install a specific version of sengrid:
 ```sh
 pip install sendgrid==6.6.0
+```
+
+# Google Sheet Integration 
+```sh
+pip install gspread 
+pip install oauth2client
 ```

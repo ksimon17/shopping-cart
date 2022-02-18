@@ -1,6 +1,6 @@
 # shopping-cart
 
-## General Environement Setup
+# General Environement Setup
 
 Create a virtual environment:
 
@@ -29,10 +29,30 @@ Then, [create your SendGrid API Key with "full access" permissions](https://app.
 Use a ".env" file approach to manage these files, as mentioned in the ".env file approach" section above. 
 
 # Google Sheet API Key Setup
+Visit the [Google Developer Console](https://console.developers.google.com/cloud-resource-manager). Create a new project, or select an existing one. Click on your project, then from the project page, search for the "Google Sheets API" and enable it. Also search for the "Google Drive API" and enable it.
+
+From either API page, or from the [API Credentials page](https://console.developers.google.com/apis/credentials), follow a process to create and download credentials to use the APIs:
+
+1. Click "Create Credentials" for a "Service Account". Follow the prompt to create a new service account named something like "spreadsheet-service", and add a role of "Editor".
+2. Click on the newly created service account from the "Service Accounts" section, and click "Add Key" to create a new "JSON" credentials file for that service account. Download the resulting .json file (this might happen automatically).
+3. Move a copy of the credentials file into your project repository, typically into the root directory or perhaps a directory called "auth", and note its filepath. For the example below, we'll refer to a file called "google-credentials.json" in an "auth" directory (i.e. "auth/google-credentials.json").
+Finally, before committing, add the credentials filepath to your repository's ".gitignore" file to ensure it does not get tracked in version control or uploaded to GitHub:
+```sh
+# the .gitignore file
+
+# ignore environment variables in the ".env" file:
+.env
+
+# ignore the google api credentials file at the following location:
+auth/google-credentials.json
+```
+## Configuring Google Spreadsheet Document 
+Use this [example Google Sheet](https://docs.google.com/spreadsheets/d/1_hisQ9kNjmc-cafIasMue6IQG-ql_6TcqFGpVNOkUSE/), or create your own. Note the document's unique identifier (e.g. ```1_hisQ9kNjmc-cafIasMue6IQG-ql_6TcqFGpVNOkUSE```) from its URL, and store the identifier in an environment variable called ```GOOGLE_SHEET_ID```.
+
+If you create your own, make sure it contains a sheet called "shopping-clean" with column headers ```id```, ```name```, ```department```, ```price```, and ```availability_date```. If you choose a different sheet name, customize it via an environment variable called ```SHEET_NAME```. Finally, modify the document's sharing settings to grant "edit" privileges to the "client email" address specified in the credentials file.
 
 
-
-## Usage
+# Usage
 
 ```sh
 python shopping_cart.py
@@ -45,7 +65,7 @@ TAX_RATE="Tax Rate" python game.py
 ```
 Otherwise, the default tax rate will always be set to the NY States Sales Tax Rate of 8.75%.
 
-# Sending Receipts via Email
+## Sending Receipts via Email
 
 ```sh 
 pip install sendgrid
@@ -55,7 +75,7 @@ You also have the option to install a specific version of sengrid:
 pip install sendgrid==6.6.0
 ```
 
-# Google Sheet Integration 
+## Google Sheet Integration 
 ```sh
 pip install gspread 
 pip install oauth2client

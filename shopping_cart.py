@@ -1,6 +1,7 @@
 # shopping_cart.py
 # Bonus Exercises Completed - 1, 4, and 6
 
+from asyncio import selector_events
 import os
 from dotenv import load_dotenv
 from sendgrid import SendGridAPIClient # Sendgrid Email Bonus Section
@@ -32,9 +33,13 @@ products = [] # to hold the list of dictionaries read in from the google sheet
 
 
 # BONUS EXERCISE 4 - SENDING RECEIPTS VIA EMAIL
-def send_email(selected_ids):
+def send_email(selected_ids, matching_prices, subtotal, tax, final_price, user_email = SENDER_ADDRESS):
     client = SendGridAPIClient(SENDGRID_API_KEY) #> <class 'sendgrid.sendgrid.SendGridAPIClient>
     print("CLIENT:", type(client))
+
+    ids_and_prices = []
+    for x in range(0,len(matching_prices)):
+        ids_and_prices.append(selected_ids[x] + " (" + matching_prices[x] + ")")
 
     subject = "Your Receipt from the Green Grocery Store"
 
@@ -42,7 +47,7 @@ def send_email(selected_ids):
     # print("HTML:", html_content)
 
     html_list_items = ""
-    for item in selected_ids:
+    for item in ids_and_prices:
         html_list_items += f"<li>You ordered: Product {item} </li>" 
 
     html_content = f"""
@@ -59,7 +64,7 @@ def send_email(selected_ids):
 
     # FYI: we'll need to use our verified SENDER_ADDRESS as the `from_email` param
     # ... but we can customize the `to_emails` param to send to other addresses
-    message = Mail(from_email=SENDER_ADDRESS, to_emails=SENDER_ADDRESS, subject=subject, html_content=html_content)
+    message = Mail(from_email=SENDER_ADDRESS, to_emails=user_email, subject=subject, html_content=html_content)
 
     try:
         response = client.send(message)
@@ -171,11 +176,7 @@ while True:
 # INFO DISPLAY / OUTPUT
 # *********************
 
-# PROVIDE THE USER WITH THE OPTION TO RECEIVE AN EMAIL COPY OF THEIR RECEIPT
-print("Thank you for inputting your items. You will receive your receipt shortly.")
-email_boolean = input("Please enter 'yes' if you wish to receive a copy of your receipt via email. Otherwise, just press enter: ")
-if email_boolean.lower() == "yes":
-    send_email(selected_ids) # BONUS EXERCISE 4 - SENDING RECEIPTS VIA EMAIL
+
 
 # DISPLAY RECEIPT TO USER
 print("---------------------------------")
@@ -188,11 +189,13 @@ print("CHECKOUT AT:", datetime.today().strftime("%Y-%m-%d %I:%M %p"))
 print("---------------------------------")
 print("SELECTED products: ")
 
+matching_prices= []
 # DISPLAY SELECTED PRODUCTS TO THE USER AND CALCULATE SUBTOTAL
 for selected_id in selected_ids:
     matching_rows = [p for p in products if str(p["id"]) == str(selected_id)]
     matching_product = matching_rows[0]
     subtotal = subtotal + matching_product["price"]
+    matching_prices.append(to_usd(matching_product["price"]))
     print(" ...", matching_product["name"], "(" + str(to_usd(matching_product["price"])) + ")")
 
 # CALCULATE TAX AND FINAL PRICE
@@ -207,6 +210,17 @@ print("TOTAL: " + str(to_usd(final_price)))
 print("---------------------------------")
 print("THANKS, SEE YOU AGAIN SOON!")
 print("---------------------------------")
+
+print("matching prices:", matching_prices)
+print(len(matching_prices))
+print(len(selected_ids))
+
+# PROVIDE THE USER WITH THE OPTION TO RECEIVE AN EMAIL COPY OF THEIR RECEIPT
+print("Thank you for inputting your items. You will receive your receipt shortly.")
+email_boolean = input("Please enter 'yes' if you wish to receive a copy of your receipt via email. Otherwise, just press enter: ")
+if email_boolean.lower() == "yes":
+    user_email = input("Please enter your email: ")
+    send_email(selected_ids, matching_prices, subtotal, tax, final_price, user_email) # BONUS EXERCISE 4 - SENDING RECEIPTS VIA EMAIL
 
 
 

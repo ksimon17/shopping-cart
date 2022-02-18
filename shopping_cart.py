@@ -17,6 +17,9 @@ load_dotenv()
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", default="OOPS, please set env var called 'SENDGRID_API_KEY'")
 SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="OOPS, please set env var called 'SENDER_ADDRESS'")
 
+print("SENDER_ADDRESS:", SENDER_ADDRESS)
+
+
 # Google Sheet Bonus Section
 DOCUMENT_ID = os.getenv("GOOGLE_SHEET_ID", default="OOPS")
 SHEET_NAME = os.getenv("SHEET_NAME", default="shopping-clean")
@@ -33,9 +36,11 @@ products = [] # to hold the list of dictionaries read in from the google sheet
 
 
 # BONUS EXERCISE 4 - SENDING RECEIPTS VIA EMAIL
-def send_email(selected_ids, matching_prices, subtotal, tax, final_price, user_email = SENDER_ADDRESS):
+def send_email(selected_ids, matching_prices, subtotal, tax, final_price, user_email = "SENDER_ADDRESS"):
     client = SendGridAPIClient(SENDGRID_API_KEY) #> <class 'sendgrid.sendgrid.SendGridAPIClient>
     print("CLIENT:", type(client))
+
+    print("USER EMAIL:", user_email)
 
     ids_and_prices = []
     for x in range(0,len(matching_prices)):

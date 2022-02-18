@@ -20,7 +20,13 @@ Install package dependencies (which are individual listed out later in the READM
 pip install -r requirements.txt
 ```
 
-# Sendgrid API Key Setup
+# SendGrid API Key Setup
+First, [sign up for a SendGrid account](https://app.sendgrid.com/login?redirect_to=%2Fsettings%2Fapi_keys), then follow the instructions to complete your "Single Sender Verification", clicking the confirmation email to verify your account. 
+NOTE: some users in the passed have reported issues with using yahoo-issued, university-issued, or work-issued emails in the past. Consequently, if you run into similar issues when attempt to set up your SendGrid account, perhaps consider using a personal Gmail account. 
+
+Then, [create your SendGrid API Key with "full access" permissions](https://app.sendgrid.com/login?redirect_to=%2Fsettings%2Fapi_keys). Once you create your SendGrid API Key, we will want to store the API Key in an environment variable in the .env file called ```SENDGRID_API_KEY```. Also set an environment variable called ```SENDER_ADDRESS``` to be the same email address as the single sender address you just associated with your SendGrid account.
+
+Use a ".env" file approach to manage these files, as mentioned in the ".env file approach" section above. 
 
 # Google Sheet API Key Setup
 

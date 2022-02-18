@@ -17,7 +17,6 @@ load_dotenv()
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", default="OOPS, please set env var called 'SENDGRID_API_KEY'")
 SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="OOPS, please set env var called 'SENDER_ADDRESS'")
 
-print("SENDER_ADDRESS:", SENDER_ADDRESS)
 
 
 # Google Sheet Bonus Section
@@ -38,9 +37,9 @@ products = [] # to hold the list of dictionaries read in from the google sheet
 # BONUS EXERCISE 4 - SENDING RECEIPTS VIA EMAIL
 def send_email(selected_ids, matching_prices, subtotal, tax, final_price, user_email = "SENDER_ADDRESS"):
     client = SendGridAPIClient(SENDGRID_API_KEY) #> <class 'sendgrid.sendgrid.SendGridAPIClient>
-    print("CLIENT:", type(client))
+    #print("CLIENT:", type(client))
 
-    print("USER EMAIL:", user_email)
+    #print("USER EMAIL:", user_email)
 
     ids_and_prices = []
     for x in range(0,len(matching_prices)):
@@ -65,7 +64,7 @@ def send_email(selected_ids, matching_prices, subtotal, tax, final_price, user_e
         {html_list_items}
     </ol>
     """
-    print(html_content)
+    #print(html_content)
 
     # FYI: we'll need to use our verified SENDER_ADDRESS as the `from_email` param
     # ... but we can customize the `to_emails` param to send to other addresses
@@ -74,10 +73,10 @@ def send_email(selected_ids, matching_prices, subtotal, tax, final_price, user_e
     try:
         response = client.send(message)
 
-        print("RESPONSE:", type(response)) #> <class 'python_http_client.client.Response'>
-        print(response.status_code) #> 202 indicates SUCCESS
-        print(response.body)
-        print(response.headers)
+        # print("RESPONSE:", type(response)) #> <class 'python_http_client.client.Response'>
+        # print(response.status_code) #> 202 indicates SUCCESS
+        # print(response.body)
+        # print(response.headers)
 
     except Exception as err:
         print(type(err))
@@ -180,7 +179,7 @@ while True:
 # *********************
 # INFO DISPLAY / OUTPUT
 # *********************
-
+print("Thank you for inputting your items. You will receive your receipt shortly.")
 
 
 # DISPLAY RECEIPT TO USER
@@ -192,7 +191,7 @@ print("WWW.GREEN-FOODS-GROCERY.COM")
 print("---------------------------------")
 print("CHECKOUT AT:", datetime.today().strftime("%Y-%m-%d %I:%M %p"))
 print("---------------------------------")
-print("SELECTED products: ")
+print("SELECTED PRODUCTS: ")
 
 matching_prices= []
 # DISPLAY SELECTED PRODUCTS TO THE USER AND CALCULATE SUBTOTAL
@@ -213,44 +212,16 @@ print("SUBTOTAL: " + str(to_usd(subtotal)))
 print("TAX: " + str(to_usd(tax)))
 print("TOTAL: " + str(to_usd(final_price)))
 print("---------------------------------")
-print("THANKS, SEE YOU AGAIN SOON!")
-print("---------------------------------")
 
-print("matching prices:", matching_prices)
-print(len(matching_prices))
-print(len(selected_ids))
 
 # PROVIDE THE USER WITH THE OPTION TO RECEIVE AN EMAIL COPY OF THEIR RECEIPT
-print("Thank you for inputting your items. You will receive your receipt shortly.")
 email_boolean = input("Please enter 'yes' if you wish to receive a copy of your receipt via email. Otherwise, just press enter: ")
 if email_boolean.lower() == "yes":
     user_email = input("Please enter your email: ")
+    if user_email == "":
+        user_email = SENDER_ADDRESS
     send_email(selected_ids, matching_prices, subtotal, tax, final_price, user_email) # BONUS EXERCISE 4 - SENDING RECEIPTS VIA EMAIL
 
-
-
-
-
-
-# products = [
-#     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
-#     {"id":2, "name": "All-Seasons Salt", "department": "pantry", "aisle": "spices seasonings", "price": 4.99},
-#     {"id":3, "name": "Robust Golden Unsweetened Oolong Tea", "department": "beverages", "aisle": "tea", "price": 2.49},
-#     {"id":4, "name": "Smart Ones Classic Favorites Mini Rigatoni With Vodka Cream Sauce", "department": "frozen", "aisle": "frozen meals", "price": 6.99},
-#     {"id":5, "name": "Green Chile Anytime Sauce", "department": "pantry", "aisle": "marinades meat preparation", "price": 7.99},
-#     {"id":6, "name": "Dry Nose Oil", "department": "personal care", "aisle": "cold flu allergy", "price": 21.99},
-#     {"id":7, "name": "Pure Coconut Water With Orange", "department": "beverages", "aisle": "juice nectars", "price": 3.50},
-#     {"id":8, "name": "Cut Russet Potatoes Steam N' Mash", "department": "frozen", "aisle": "frozen produce", "price": 4.25},
-#     {"id":9, "name": "Light Strawberry Blueberry Yogurt", "department": "dairy eggs", "aisle": "yogurt", "price": 6.50},
-#     {"id":10, "name": "Sparkling Orange Juice & Prickly Pear Beverage", "department": "beverages", "aisle": "water seltzer sparkling water", "price": 2.99},
-#     {"id":11, "name": "Peach Mango Juice", "department": "beverages", "aisle": "refrigerated", "price": 1.99},
-#     {"id":12, "name": "Chocolate Fudge Layer Cake", "department": "frozen", "aisle": "frozen dessert", "price": 18.50},
-#     {"id":13, "name": "Saline Nasal Mist", "department": "personal care", "aisle": "cold flu allergy", "price": 16.00},
-#     {"id":14, "name": "Fresh Scent Dishwasher Cleaner", "department": "household", "aisle": "dish detergents", "price": 4.99},
-#     {"id":15, "name": "Overnight Diapers Size 6", "department": "babies", "aisle": "diapers wipes", "price": 25.50},
-#     {"id":16, "name": "Mint Chocolate Flavored Syrup", "department": "snacks", "aisle": "ice cream toppings", "price": 4.50},
-#     {"id":17, "name": "Rendered Duck Fat", "department": "meat seafood", "aisle": "poultry counter", "price": 9.99},
-#     {"id":18, "name": "Pizza for One Suprema Frozen Pizza", "department": "frozen", "aisle": "frozen pizza", "price": 12.50},
-#     {"id":19, "name": "Gluten Free Quinoa Three Cheese & Mushroom Blend", "department": "dry goods pasta", "aisle": "grains rice dried goods", "price": 3.99},
-#     {"id":20, "name": "Pomegranate Cranberry & Aloe Vera Enrich Drink", "department": "beverages", "aisle": "juice nectars", "price": 4.25}
-# ] # based on data from Instacart: https://www.instacart.com/datasets/grocery-shopping-2017
+print("---------------------------------")
+print("THANKS, SEE YOU AGAIN SOON!")
+print("---------------------------------")

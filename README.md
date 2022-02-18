@@ -20,6 +20,9 @@ Install package dependencies (which are individual listed out later in the READM
 pip install -r requirements.txt
 ```
 
+# Environment Variables - ".env" File Approach
+
+
 # SendGrid API Key Setup
 First, [sign up for a SendGrid account](https://app.sendgrid.com/login?redirect_to=%2Fsettings%2Fapi_keys), then follow the instructions to complete your "Single Sender Verification", clicking the confirmation email to verify your account. 
 NOTE: some users in the passed have reported issues with using yahoo-issued, university-issued, or work-issued emails in the past. Consequently, if you run into similar issues when attempt to set up your SendGrid account, perhaps consider using a personal Gmail account. 
@@ -53,30 +56,15 @@ If you create your own, make sure it contains a sheet called "shopping-clean" wi
 
 
 # Usage
-
+Once you have properly set up your local environment, installed all necessary packages, and set up your SendGrid API Key and Google Spreadsheet API Key credentials, you are ready to run the program. 
+In order to run the program, please enter the following in the command line: 
 ```sh
 python shopping_cart.py
 ```
 
 ## Sales Tax Rate Configuration
-In order to configure your individual sales tax rate, please enter the following when running the program:
+By default, the sales tax rate will be automatically set to the NY State Sales Tax Rate of 8.75%.
+In order to configure the program to your state's specific sales tax rate, please enter the following when running the program:
 ```sh
 TAX_RATE="Tax Rate" python game.py
-```
-Otherwise, the default tax rate will always be set to the NY States Sales Tax Rate of 8.75%.
-
-## Sending Receipts via Email
-
-```sh 
-pip install sendgrid
-```
-You also have the option to install a specific version of sengrid:
-```sh
-pip install sendgrid==6.6.0
-```
-
-## Google Sheet Integration 
-```sh
-pip install gspread 
-pip install oauth2client
 ```

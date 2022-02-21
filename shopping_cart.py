@@ -169,16 +169,19 @@ print("---------------------------------")
 # LOOP WHERE THE USER ENTER IDs OF THEIR SELECTED PRODUCTS
 while True:
     product_id = input("Please input a product identifier: ")
-    if product_id == "DONE":
+    if product_id.upper() == "DONE":
         break
     elif product_id not in acceptable_inputs:
-        print("Sorry, that is not a valid product id. Please try again!")
+        print("Sorry, that is not a valid product id. If you are finished checking your") 
+        print("products and wish to exit the program, enter 'DONE' at the next prompt.")
+        print("Otherwise Please try again! ")
     else:
         selected_ids.append(product_id)
 
 # *********************
 # INFO DISPLAY / OUTPUT
 # *********************
+print("---------------------------------")
 print("Thank you for inputting your items. You will receive your receipt shortly.")
 
 

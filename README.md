@@ -1,27 +1,21 @@
-# shopping-cart
+# shopping-cart README.md - Setup and Usage Information
 
-# General Environement Setup
+# General Environment Setup
 
 Create a virtual environment:
-
 ```sh
 conda create -n shoppingcart-env python=3.8
 ```
-
 Activate the virtual environment:
-
 ```sh
 conda activate shoppingcart-env
 ```
-
-Install package dependencies (which are individual listed out later in the README):
-
+Install package dependencies necessary to run certain aspects of the program:
 ```sh
 pip install -r requirements.txt
 ```
-
-# Environment Variables - ".env" File Approach
-
+Data setup:  
+The provided code includes a variable called ```products``` which facilitates management of the products inventory from within the application's source code. The program uses a Google Sheets document as its storage mechanism for ```products``` and reads in the appropriate product inventory during runtime. More specific instructions related to the necessary setup for the Google Sheets document is listed in the "Google Sheet API Key Setup" below.
 
 # SendGrid API Key Setup
 First, [sign up for a SendGrid account](https://app.sendgrid.com/login?redirect_to=%2Fsettings%2Fapi_keys), then follow the instructions to complete your "Single Sender Verification", clicking the confirmation email to verify your account. 
@@ -46,14 +40,46 @@ Finally, before committing, add the credentials filepath to your repository's ".
 # ignore environment variables in the ".env" file:
 .env
 
+# ignore google credentials:
+# if you want to name your credentials "google-credentials.json":
+google-credentials.json 
+# otherwise use this catch-all to ignore all JSON files:
+*.json   
+
 # ignore the google api credentials file at the following location:
 auth/google-credentials.json
 ```
+
 ## Configuring Google Spreadsheet Document 
 Use this [example Google Sheet](https://docs.google.com/spreadsheets/d/1_hisQ9kNjmc-cafIasMue6IQG-ql_6TcqFGpVNOkUSE/), or create your own. Note the document's unique identifier (e.g. ```1_hisQ9kNjmc-cafIasMue6IQG-ql_6TcqFGpVNOkUSE```) from its URL, and store the identifier in an environment variable called ```GOOGLE_SHEET_ID```.
 
 If you create your own, make sure it contains a sheet called "shopping-clean" with column headers ```id```, ```name```, ```department```, ```price```, and ```availability_date```. If you choose a different sheet name, customize it via an environment variable called ```SHEET_NAME```. Finally, modify the document's sharing settings to grant "edit" privileges to the "client email" address specified in the credentials file.
 
+# Environment Variables - ".env" File Approach
+You must set up a local file named ".env" that is outside the root directory of the project. In this file, you will be able to store the necessary environment variables to run the program. For the purposes of the shopping-cart program, the following code will suffice:
+```sh
+# this is the .env file
+
+# for the sengrid email bonus assignment
+SENDGRID_API_KEY="SENDGRID_API_KEY"
+SENDER_ADDRESS="SENDER_ADDRESS"
+
+# for the google sheet bonus assignment 
+GOOGLE_SHEET_ID="1_hisQ9kNjmc-cafIasMue6IQG-ql_6TcqFGpVNOkUSE"
+SHEET_NAME="shopping-clean"
+
+#For Tax Rate
+TAX_RATE=0.0875
+```
+Note that you will need to update the values of the SendGrid environment variables to meet your specific API key and email address that you created in your SendGrid account (instructions for that mentioned in the "SendGrid API Key Setup" Section)
+
+Also make sure to add all of your repository's ".gitignore" file to ensure it does not get tracked in version control or uploaded to Github:  
+```sh
+# the .gitignore file
+
+# ignore environment variables in the ".env" file:
+.env
+```
 
 # Usage
 Once you have properly set up your local environment, installed all necessary packages, and set up your SendGrid API Key and Google Spreadsheet API Key credentials, you are ready to run the program. 
@@ -68,3 +94,4 @@ In order to configure the program to your state's specific sales tax rate, pleas
 ```sh
 TAX_RATE="Tax Rate" python game.py
 ```
+

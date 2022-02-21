@@ -94,4 +94,4 @@ In order to configure the program to your state's specific sales tax rate, pleas
 ```sh
 TAX_RATE="Tax Rate" python shopping_cart.py
 ```
-Make sure that your tax rate is listed in decimal form (i.e. list an 8.75% tax rate as 0.0875)
+Make sure that your tax rate is listed in decimal form (i.e. list an 8.75% tax rate as 0.0875).

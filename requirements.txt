@@ -7,7 +7,7 @@ sendgrid==6.6.0
 python-dotenv
 
 
-#gspread==3.6.0 oauth2client==4.1.3
+#gspread and oauth2client for google sheet integration
 gspread 
 oauth2client
 

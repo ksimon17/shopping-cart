@@ -73,7 +73,7 @@ TAX_RATE=0.0875
 ```
 Note that you will need to update the values of the SendGrid environment variables to meet your specific API key and email address that you created in your SendGrid account (instructions for that mentioned in the "SendGrid API Key Setup" Section)
 
-Also make sure to add all of your repository's ".gitignore" file to ensure it does not get tracked in version control or uploaded to Github:  
+Also make sure to add all of your environment variable to your repository's ".gitignore" file to ensure it does not get tracked in version control or uploaded to Github:  
 ```sh
 # the .gitignore file
 
@@ -92,6 +92,6 @@ python shopping_cart.py
 By default, the sales tax rate will be automatically set to the NY State Sales Tax Rate of 8.75%.
 In order to configure the program to your state's specific sales tax rate, please enter the following when running the program:
 ```sh
-TAX_RATE="Tax Rate" python game.py
+TAX_RATE="Tax Rate" python shopping_cart.py
 ```
-
+Make sure that your tax rate is listed in decimal form (i.e. list an 8.75% tax rate as 0.0875)
